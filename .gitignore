@@ -1,0 +1,13 @@
+# Build artifacts
+target/
+
+# Test outputs
+test-output/
+logs/
+screenshots/
+
+# IDE files
+.idea/
+*.iml
+.DS_Store
+
