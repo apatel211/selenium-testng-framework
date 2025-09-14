@@ -1,18 +1,20 @@
 package tests;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import pages.SpotPage;
-import utils.*;
+import utils.JsonUtils;
+import utils.LoggerUtil;
+import utils.RetryAnalyzer;
+import utils.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpotTests extends  BaseTest{
-
+public class SpotTests extends BaseTest {
 
     private SpotPage spot;
     private JsonNode headersJson;
@@ -56,7 +58,8 @@ public class SpotTests extends  BaseTest{
 
     @Test(description = "SPOT-002: Validate trading data is present")
     public void spot002_validateTradingDataPresent() {
-        List<WebElement> rows = spot.getRows();
+
+        List<WebElement> rows = spot.getRowsWithData();
         Assert.assertTrue(rows.size() > 0, "No trading pairs found in Spot section");
 
         int limit = Math.min(2, rows.size());  //change the row limit

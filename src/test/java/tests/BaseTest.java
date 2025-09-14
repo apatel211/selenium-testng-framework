@@ -17,7 +17,7 @@ public abstract class BaseTest {
 
     @BeforeMethod
     @Parameters("browser")
-    public void setup(@Optional("firefox") String browser) {
+    public void setup(@Optional("chrome") String browser) {
         driver = DriverFactory.getDriver(browser);
         driver.manage().window().maximize();
         driver.get(ConfigReader.get("baseUrl", "https://trade.multibank.io/"));

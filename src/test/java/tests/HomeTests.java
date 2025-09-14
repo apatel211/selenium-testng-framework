@@ -1,18 +1,20 @@
 package tests;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import pages.HomePage;
-import utils.*;
+import utils.JsonUtils;
+import utils.LoggerUtil;
+import utils.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
 
-public class HomeTests extends BaseTest{
+public class HomeTests extends BaseTest {
     private HomePage home;
 
     private JsonNode navJson;
@@ -29,8 +31,6 @@ public class HomeTests extends BaseTest{
 
     @Test(description = "NAV-001: Verify all nav items from JSON are present")
     public void nav001_validateNavItemsPresence() {
-
-
         List<String> actualTexts = home.getNavTexts();
         System.out.println("=== Actual Nav Texts from UI ===");
         for (String txt : actualTexts) {
@@ -72,7 +72,6 @@ public class HomeTests extends BaseTest{
         LoggerUtil.info(this.getClass(), "Navigation hrfe been verified ");
     }
 
-
     @Test(description = "FOOTER-001: Verify marketing banners in footer")
     public void footer001_validateFooterBanners() {
         List<String> actual = home.getAllBannerContents();
@@ -87,10 +86,8 @@ public class HomeTests extends BaseTest{
         }
 
         for (String exp : expected) {
-            // 🔹 Normalize expected
             String normExp = ValidationUtils.normalize(exp).toLowerCase();
 
-            // 🔹 Normalize actuals & check if any contains expected
             boolean found = actual.stream()
                     .map(ValidationUtils::normalize)
                     .map(String::toLowerCase)
@@ -101,35 +98,5 @@ public class HomeTests extends BaseTest{
 
         LoggerUtil.info(this.getClass(), "Banners are present and have been verified");
     }
-
-    @Test(description = "FOOTER-002: Verify marketing banners in footer", enabled = false)
-    public void footer002_validateFooterBanners2() {
-        List<String> actual = home.getAllBannerContentsNew();
-        System.out.println("=== Actual Footer/Marketing Banners ===");
-        actual.forEach(System.out::println);
-
-        Assert.assertFalse(actual.isEmpty(), "No footer banners found!");
-
-        List<String> expected = new ArrayList<>();
-        for (JsonNode node : footerJson) {
-            expected.add(node.asText().trim());
-        }
-
-        for (String exp : expected) {
-            // 🔹 Normalize expected
-            String normExp = ValidationUtils.normalize(exp).toLowerCase();
-
-            // 🔹 Normalize actuals & check if any contains expected
-            boolean found = actual.stream()
-                    .map(ValidationUtils::normalize)
-                    .map(String::toLowerCase)
-                    .anyMatch(act -> act.contains(normExp));
-
-            Assert.assertTrue(found, "Expected banner text not found: " + exp);
-        }
-
-        LoggerUtil.info(this.getClass(), "Banners are present and have been verified");
-    }
-
 
 }

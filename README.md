@@ -43,9 +43,9 @@ selenium-testng-framework/
 
 ## ▶️ Run Tests (Local Browser)
 By default, the browser is read from `config.properties`.
-- mvn clean test
-- mvn clean test -Dbrowser=chrome
-- mvn clean test -Dbrowser=firefox
+- mvn clean test                        # runs Chrome + Firefox
+- mvn clean test -DsuiteXmlFile=testng.xml   # same effect, explicit suite
+
 
 ## 🌐 Run Tests on Selenium Grid (Standalone JAR)
 
@@ -54,10 +54,14 @@ By default, the browser is read from `config.properties`.
 - Default Hub UI: http://localhost:4444/ui
 - Run tests against Grid:
 - mvn clean test -Dbrowser=chrome -DgridUrl=http://localhost:4444
+- mvn clean test -Dbrowser=firefox -DgridUrl=http://localhost:4444
+- mvn clean test -DsuiteXmlFile=testng.xml
 
 ## 🔀 Parallel Execution
-- Controlled in testng.xml: In thread count 
-
+- Controlled in testng.xml: Number of  thread count
+- Can be run differently with Classes / Methods  
+  mvn clean test -Pparallel-classes
+  mvn clean test -Pparallel-methods
 - Retry analyzer is globally set testng.xml:
 
 - Cross-browser , added for chrome and firefox.

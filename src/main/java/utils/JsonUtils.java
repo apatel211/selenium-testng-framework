@@ -1,12 +1,9 @@
 package utils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.FileReader;
 
 // JsonUtils provides a reusable method to read any JSON file under src/test/resources
 public class JsonUtils {

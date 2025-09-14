@@ -1,5 +1,6 @@
 package utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -7,13 +8,10 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class ValidationUtils {
 
-    private WebDriver driver;
+    private final WebDriver driver;
 
     public ValidationUtils(WebDriver driver) {
         this.driver = driver;
@@ -28,46 +26,16 @@ public class ValidationUtils {
                 .trim();
     }
 
-    public boolean validatePairSymbol(String symbol) {
-        // e.g., BTC/USDT, ADA-USDT, AAVE/USDT
-        return symbol.matches("^[A-Z0-9]{2,10}[-/][A-Z0-9]{2,10}$");
-    }
-
-    public List<String> validatePageFromJson(JsonNode pageJson) {
-        List<String> differences = new ArrayList<>();
-
-        pageJson.fieldNames().forEachRemaining(key -> {
-            JsonNode node = pageJson.get(key);
-            String selector = node.get("selector").asText();
-            String expectedText = normalize(node.get("expected").asText());
-
-            List<WebElement> elements = driver.findElements(By.cssSelector(selector));
-            boolean matchFound = false;
-            String actualText = "";
-
-            for (WebElement element : elements) {
-                if (element.isDisplayed()) {
-                    actualText = normalize(element.getText());
-                    if (actualText.equals(expectedText)) {
-                        matchFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!matchFound) {
-                differences.add("Mismatch for '" + key + "': expected '" + expectedText + "', but found '" + actualText + "'");
-            }
-        });
-
-        return differences;
-    }
-
-
     public static void scrollToBottom(WebDriver driver) {
         ((JavascriptExecutor) driver)
                 .executeScript("window.scrollTo(0, document.body.scrollHeight);");
     }
+
+    public static void scrollIntoView(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+
 
     public static void validateLink(WebDriver driver, By selector, JsonNode node, int timeout) {
         WaitUtils waitUtils = new WaitUtils(driver);
@@ -113,6 +81,40 @@ public class ValidationUtils {
         driver.switchTo().window(mainWindow);
     }
 
+    public boolean validatePairSymbol(String symbol) {
+        // e.g., BTC/USDT, ADA-USDT, AAVE/USDT
+        return symbol.matches("^[A-Z0-9]{2,10}[-/][A-Z0-9]{2,10}$");
+    }
+
+    public List<String> validatePageFromJson(JsonNode pageJson) {
+        List<String> differences = new ArrayList<>();
+
+        pageJson.fieldNames().forEachRemaining(key -> {
+            JsonNode node = pageJson.get(key);
+            String selector = node.get("selector").asText();
+            String expectedText = normalize(node.get("expected").asText());
+
+            List<WebElement> elements = driver.findElements(By.cssSelector(selector));
+            boolean matchFound = false;
+            String actualText = "";
+
+            for (WebElement element : elements) {
+                if (element.isDisplayed()) {
+                    actualText = normalize(element.getText());
+                    if (actualText.equals(expectedText)) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!matchFound) {
+                differences.add("Mismatch for '" + key + "': expected '" + expectedText + "', but found '" + actualText + "'");
+            }
+        });
+
+        return differences;
+    }
 
 }
 

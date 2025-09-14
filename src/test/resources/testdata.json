@@ -1,9 +1,21 @@
 {
   "navItems": [
-    { "text": "Dashboard",  "hrefContains": "https://trade.multibank.io/" },
-    { "text": "Markets",    "hrefContains": "https://trade.multibank.io/" },
-    { "text": "Log In",     "hrefContains": "https://trade.multibank.io/markets" },
-    { "text": "Sign Up",    "hrefContains": "https://trade.multibank.io/login" }
+    {
+      "text": "Dashboard",
+      "hrefContains": "https://trade.multibank.io/"
+    },
+    {
+      "text": "Markets",
+      "hrefContains": "https://trade.multibank.io/"
+    },
+    {
+      "text": "Log In",
+      "hrefContains": "https://trade.multibank.io/markets"
+    },
+    {
+      "text": "Sign Up",
+      "hrefContains": "https://trade.multibank.io/login"
+    }
   ],
   "app_download_links": {
     "apple_app_store": {

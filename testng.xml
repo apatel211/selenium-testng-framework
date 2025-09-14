@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="Multibank Suite" parallel="classes" thread-count="2">
+<suite name="Multibank Suite" parallel="classes" thread-count="1">
 
   <!-- Register the test listener for reporting and screenshots -->
   <listeners>
@@ -27,5 +27,17 @@
       <class name="tests.SpotTests"/>
     </classes>
   </test>
+
+  <!--
+  <test name="UITests">
+    <parameter name="browser" value="${browser}"/>
+    <classes>
+      <class name="tests.HomeTests"/>
+      <class name="tests.AboutTests"/>
+      <class name="tests.AppTests"/>
+      <class name="tests.SpotTests"/>
+    </classes>
+  </test>
+  -->
 
 </suite>

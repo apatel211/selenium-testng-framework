@@ -1,36 +1,31 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.LoggerUtil;
 import utils.ValidationUtils;
 import utils.WaitUtils;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SpotPage extends BasePage {
-
-    private WebDriver driver;
-    private WaitUtils waitUtils;
-    private int timeout;
 
     // Locators
     private final By spotTab = By.xpath("//span[contains(text(),'Spot')]");
     private final By categoryTabs = By.xpath("//div[contains(@class,'style_list')]/button");
     private final By tableHeaders = By.cssSelector("table thead th");
     private final By tableRows = By.cssSelector("table tbody tr");
-
-    private final By pairCell   = By.cssSelector("td[id$='base-td']");
-    private final By priceCell  = By.cssSelector("td[id$='price-td']");
+    private final By pairCell = By.cssSelector("td[id$='base-td']");
+    private final By priceCell = By.cssSelector("td[id$='price-td']");
     private final By changeCell = By.cssSelector("td[id$='change_in_price-td']");
-    private final By highCell   = By.cssSelector("td[id$='high_24hr-td']");
-    private final By lowCell    = By.cssSelector("td[id$='low_24hr-td']");
+    private final By highCell = By.cssSelector("td[id$='high_24hr-td']");
+    private final By lowCell = By.cssSelector("td[id$='low_24hr-td']");
     private final By volumeCell = By.cssSelector("td[id$='base_volume-td']");
+    private final WebDriver driver;
+    private final WaitUtils waitUtils;
+    private final int timeout;
 
     public SpotPage(WebDriver driver, int timeout) {
         super(driver, timeout);
@@ -120,14 +115,23 @@ public class SpotPage extends BasePage {
         return volume;
     }
 
+    public List<WebElement> getRowsWithData() {
+        waitUtils.fluentWait(d -> {
+            List<WebElement> rows = d.findElements(tableRows);
+            if (rows.isEmpty()) return false;
+
+            String pair = rows.get(0).findElement(pairCell).getText().trim();
+            return !pair.isEmpty();
+        }, timeout, 500);
+        return driver.findElements(tableRows);
+    }
 
     public boolean hasGraphInVolume(WebElement row) {
         WebElement cell = row.findElement(volumeCell);
 
         // Scroll into view (important for Firefox/Grid headless)
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cell);
+        ValidationUtils.scrollIntoView(driver, cell);
 
-        // Wait up to 5s for SVG or Canvas or Path inside the volume cell
         try {
             waitUtils.fluentWait(d ->
                             !cell.findElements(By.tagName("svg")).isEmpty() ||
@@ -148,7 +152,6 @@ public class SpotPage extends BasePage {
         LoggerUtil.info(this.getClass(), "Volume graph present: " + hasGraph);
         return hasGraph;
     }
-
 
 }
 

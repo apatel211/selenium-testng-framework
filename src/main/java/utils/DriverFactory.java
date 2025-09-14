@@ -1,12 +1,12 @@
 package utils;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
 
@@ -62,7 +62,8 @@ public class DriverFactory {
         if (tlDriver.get() != null) {
             try {
                 tlDriver.get().quit();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             tlDriver.remove();
         }
     }

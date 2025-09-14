@@ -1,4 +1,5 @@
 package pages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,20 +10,20 @@ import utils.WaitUtils;
 import java.util.List;
 
 public class AboutPage extends BasePage {
-    private WaitUtils waitUtils;
+    private final WaitUtils waitUtils;
 
-    private By aboutUsText = By.xpath("//*[contains(text(),'About Us')]");
+    private final By aboutUsText = By.xpath("//*[contains(text(),'About Us')]");
 
-    private By aboutUsLink = By.cssSelector("a[href*='why-multibank']");
+    private final By aboutUsLink = By.cssSelector("a[href*='why-multibank']");
 
-    private By componentLocator = By.cssSelector("h1, h2, h3, p, a, button");
-
+    private final By componentLocator = By.cssSelector("h1, h2, h3, p, a, button");
 
     public AboutPage(WebDriver driver, int timeout) {
         super(driver, timeout);
         this.waitUtils = new WaitUtils(driver); // Initialize wait utility
         LoggerUtil.info(this.getClass(), "AboutPage initialized");
     }
+
     @Override
     public boolean isLoaded() {
         LoggerUtil.info(this.getClass(), "Waiting for About Us heading to be visible");
@@ -54,7 +55,6 @@ public class AboutPage extends BasePage {
 
     public boolean enumerateVisibleComponents() {
         LoggerUtil.info(this.getClass(), "Enumerating visible components...");
-
 
         List<WebElement> elements = driver.findElements(componentLocator);
 
